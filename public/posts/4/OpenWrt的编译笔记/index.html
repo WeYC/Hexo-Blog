@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.weovo.cf","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":280,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="前言：   OpenWrt的固件编译基于Lean的Openwrt源码仓库进行编译。    编译方式：本地编译，Github Actions 云编译。  本地编译： 准备工作：  科学上网  Ubuntu TLS 20.04  支持OpenWrt的设备例如网件R6220, 斐讯K2P，小米3C, 极路由1S，联想new3等。  高性能X86软路由设备。    编译配置： 命令行输入: sudo ap">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenWrt的编译笔记">
+<meta property="og:url" content="https://blog.weovo.cf/posts/4/OpenWrt%E7%9A%84%E7%BC%96%E8%AF%91%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="WYC&#39;s Blog">
+<meta property="og:description" content="前言：   OpenWrt的固件编译基于Lean的Openwrt源码仓库进行编译。    编译方式：本地编译，Github Actions 云编译。  本地编译： 准备工作：  科学上网  Ubuntu TLS 20.04  支持OpenWrt的设备例如网件R6220, 斐讯K2P，小米3C, 极路由1S，联想new3等。  高性能X86软路由设备。    编译配置： 命令行输入: sudo ap">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-01-09T14:39:01.000Z">
+<meta property="article:modified_time" content="2022-01-12T20:11:47.315Z">
+<meta property="article:author" content="WYC">
+<meta property="article:tag" content="学习">
+<meta property="article:tag" content="OpenWrt">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://blog.weovo.cf/posts/4/OpenWrt%E7%9A%84%E7%BC%96%E8%AF%91%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>OpenWrt的编译笔记 | WYC's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">WYC's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p id="jinrishici-sentence" class="site-subtitle" itemprop="description">由 Hexo & NexT.Gemini 强力驱动</p>
+      <!-- <span id="jinrishici-sentence">正在加载今日诗词....</span> -->
+      <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">11</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">13</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.weovo.cf/posts/4/OpenWrt%E7%9A%84%E7%BC%96%E8%AF%91%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="WYC">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WYC's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          OpenWrt的编译笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-01-09 22:39:01" itemprop="dateCreated datePublished" datetime="2022-01-09T22:39:01+08:00">2022-01-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-13 04:11:47" itemprop="dateModified" datetime="2022-01-13T04:11:47+08:00">2022-01-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenWrt/" itemprop="url" rel="index"><span itemprop="name">OpenWrt</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h2><p>   OpenWrt的固件编译基于<a target="_blank" rel="noopener" href="https://github.com/coolsnowwolf/lede">Lean</a>的Openwrt源码仓库进行编译。</p>
+<p>   编译方式：<u>本地编译</u>，<u><a target="_blank" rel="noopener" href="https://github.com/P3TERX/Actions-OpenWrt">Github Actions</a></u> 云编译。</p>
+<hr>
+<h2 id="本地编译："><a href="#本地编译：" class="headerlink" title="本地编译："></a>本地编译：</h2><ol>
+<li><h3 id="准备工作："><a href="#准备工作：" class="headerlink" title="准备工作："></a>准备工作：</h3></li>
+<li><ul>
+<li><p>科学上网</p>
+</li>
+<li><p>Ubuntu TLS 20.04</p>
+</li>
+<li><p>支持OpenWrt的设备例如网件R6220, 斐讯K2P，小米3C, 极路由1S，联想new3等。</p>
+</li>
+<li><p>高性能X86软路由设备。</p>
+</li>
+</ul>
+</li>
+<li><h3 id="编译配置："><a href="#编译配置：" class="headerlink" title="编译配置："></a>编译配置：</h3><ul>
+<li><p>命令行输入: <code>sudo apt-get update</code> 然后输入 <code>sudo apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl swig rsync</code></p>
+</li>
+<li><p>使用 <code>git clone https://github.com/coolsnowwolf/lede</code> 命令下载好源代码，然后 <code>cd lede</code> 进入目录</p>
+</li>
+</ul>
+</li>
+</ol>
+<span id="more"></span>
+
+<ul>
+<li>命令行输入: <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./scripts/feeds update -a</span><br><span class="line">./scripts/feeds install -a</span><br><span class="line">make menuconfig (配置.config)</span><br></pre></td></tr></table></figure>
+</li>
+<li><code>make -j8 download V=s</code> 下载dl库（国内请尽量全局科学上网）</li>
+<li>输入 <code>make -j1 V=s</code> （-j1 后面是线程数。第一次编译推荐用单线程）即可开始编译你要的固件了。</li>
+<li>温馨提示： ​        首次编译固件时，不要大量安装插件，否则编译会容易报错，大部分报错有可能是依赖没有下载全面说导致的，或者是插件冲突，在加入插件时应当考虑设备Rom容量和Ram，加入大量插件会使编译出的固件包太大而无法刷入设备，Ram不够插件运行的等。</li>
+</ul>
+<ol>
+<li><h3 id="Github-Actions-云编译："><a href="#Github-Actions-云编译：" class="headerlink" title="Github Actions 云编译："></a>Github Actions 云编译：</h3><ul>
+<li><p>使用<a target="_blank" rel="noopener" href="https://github.com/P3TERX">P3TERX</a>的云编译脚本，点击Fork</p>
+</li>
+<li><p>脚本<a target="_blank" rel="noopener" href="https://p3terx.com/archives/build-openwrt-with-github-actions.html">文档</a>地址</p>
+</li>
+<li><p>自定义 feeds 配置文件</p>
+<p>   把 <code>feeds.conf.default</code> 文件放入仓库根目录即可，它会覆盖 Open­Wrt 源码目录下的相关文件。</p>
+</li>
+<li><p>如果没有.config配置文件可以使用SSH 连接到 Actions</p>
+<p>   通过 tmate 连接到 GitHub Ac­tions 虚拟服务器环境，可直接进行 <code>make menuconfig</code> 操作生成编译配置，或者任意的客制化操作。也就是说，你不需要再自己搭建编译环境了。这可能改变之前所有使用 GitHub Ac­tions 的编译 Open­Wrt 方式。</p>
+<ul>
+<li><p>在<code>Run Workflow</code>时把<code>SSH connection to Actions</code>的值改为<code>true</code>（或者也可以不修改，而是通过 <a target="_blank" rel="noopener" href="https://p3terx.com/archives/github-actions-manual-trigger.html#toc_2">webhook 方式</a>发送带有<code>ssh</code>触发关键词的请求。）</p>
+</li>
+<li><p>在触发工作流程后，在 Actions 日志页面等待执行到<code>SSH connection to Actions</code>步骤，会出现类似下面的信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">To connect to this session copy-n-paste the following into a terminal or browser:</span><br><span class="line"></span><br><span class="line">ssh Y26QeagDtsPXp2mT6me5cnMRd@nyc1.tmate.io</span><br><span class="line"></span><br><span class="line">https://tmate.io/t/Y26QeagDtsPXp2mT6me5cnMRd</span><br></pre></td></tr></table></figure></li>
+<li><p>复制 SSH 连接命令粘贴到终端内执行，或者复制链接在浏览器中打开使用网页终端。（网页终端可能会遇到黑屏的情况，按 <code>Ctrl</code>+<code>C</code> 即可）</p>
+</li>
+<li><p><code>cd openwrt &amp;&amp; make menuconfig</code></p>
+</li>
+<li><p>完成后按<code>Ctrl</code>+<code>D</code>组合键或执行<code>exit</code>命令退出，后续编译工作将自动进行。</p>
+</li>
+<li><p>**提示:**固件目录下有个<code>config.seed</code>或者<code>config.buildinfo</code>文件，如果你需要再次编译可以使用它。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><h3 id="网件R6220配置："><a href="#网件R6220配置：" class="headerlink" title="网件R6220配置："></a>网件R6220配置：</h3><ul>
+<li><p>集成Hello world科学上网</p>
+</li>
+<li><p>Samba网络共享</p>
+</li>
+<li><p>miniDLAN</p>
+</li>
+<li><p>UPnP</p>
+</li>
+<li><p>动态DDNS</p>
+</li>
+<li><p>上网时间控制</p>
+</li>
+<li><p>FTP服务器</p>
+</li>
+<li><p>硬盘休眠</p>
+</li>
+<li><p>Turbo ACC 网络加速</p>
+</li>
+<li><p>USB储存设备挂载</p>
+<ul>
+<li><p>支持 USB1，USB2，USB3</p>
+</li>
+<li><p>支持exFAT，ext4，NTFS，VFAT(FAT32)</p>
+</li>
+<li><p>支持自动挂载</p>
+</li>
+<li><p>热插拔</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><span class="line">CONFIG_TARGET_ramips=y</span><br><span class="line">CONFIG_TARGET_ramips_mt7621=y</span><br><span class="line">CONFIG_TARGET_ramips_mt7621_DEVICE_netgear_r6220=y</span><br><span class="line">CONFIG_PACKAGE_6in4=y</span><br><span class="line">CONFIG_PACKAGE_SAMBA_MAX_DEBUG_LEVEL=-1</span><br><span class="line">CONFIG_PACKAGE_badblocks=y</span><br><span class="line">CONFIG_PACKAGE_bash=y</span><br><span class="line">CONFIG_PACKAGE_boost=y</span><br><span class="line">CONFIG_PACKAGE_boost-date_time=y</span><br><span class="line">CONFIG_PACKAGE_boost-program_options=y</span><br><span class="line">CONFIG_PACKAGE_boost-system=y</span><br><span class="line"># CONFIG_PACKAGE_dns2socks is not set</span><br><span class="line">CONFIG_PACKAGE_e2fsprogs=y</span><br><span class="line">CONFIG_PACKAGE_fdisk=y</span><br><span class="line">CONFIG_PACKAGE_hd-idle=y</span><br><span class="line">CONFIG_PACKAGE_ip6tables=y</span><br><span class="line">CONFIG_PACKAGE_ipt2socks=y</span><br><span class="line">CONFIG_PACKAGE_ipv6helper=y</span><br><span class="line">CONFIG_PACKAGE_kcptun-client=y</span><br><span class="line">CONFIG_PACKAGE_kcptun-config=y</span><br><span class="line">CONFIG_PACKAGE_kmod-crypto-crc32c=y</span><br><span class="line">CONFIG_PACKAGE_kmod-fs-exfat=y</span><br><span class="line">CONFIG_PACKAGE_kmod-fs-ext4=y</span><br><span class="line">CONFIG_PACKAGE_kmod-fs-ntfs=y</span><br><span class="line">CONFIG_PACKAGE_kmod-fs-vfat=y</span><br><span class="line">CONFIG_PACKAGE_kmod-ipt-nat6=y</span><br><span class="line">CONFIG_PACKAGE_kmod-iptunnel=y</span><br><span class="line">CONFIG_PACKAGE_kmod-iptunnel4=y</span><br><span class="line">CONFIG_PACKAGE_kmod-lib-crc16=y</span><br><span class="line">CONFIG_PACKAGE_kmod-nf-nat6=y</span><br><span class="line">CONFIG_PACKAGE_kmod-nls-cp437=y</span><br><span class="line">CONFIG_PACKAGE_kmod-nls-iso8859-1=y</span><br><span class="line">CONFIG_PACKAGE_kmod-nls-utf8=y</span><br><span class="line">CONFIG_PACKAGE_kmod-scsi-core=y</span><br><span class="line">CONFIG_PACKAGE_kmod-sit=y</span><br><span class="line">CONFIG_PACKAGE_kmod-usb-ehci=y</span><br><span class="line">CONFIG_PACKAGE_kmod-usb-ohci=y</span><br><span class="line">CONFIG_PACKAGE_kmod-usb-storage=y</span><br><span class="line">CONFIG_PACKAGE_kmod-usb-storage-extras=y</span><br><span class="line">CONFIG_PACKAGE_kmod-usb-uhci=y</span><br><span class="line">CONFIG_PACKAGE_kmod-usb2=y</span><br><span class="line">CONFIG_PACKAGE_libblkid=y</span><br><span class="line">CONFIG_PACKAGE_libbz2=y</span><br><span class="line">CONFIG_PACKAGE_libcomerr=y</span><br><span class="line">CONFIG_PACKAGE_libevdev=y</span><br><span class="line">CONFIG_PACKAGE_libexif=y</span><br><span class="line">CONFIG_PACKAGE_libext2fs=y</span><br><span class="line">CONFIG_PACKAGE_libfdisk=y</span><br><span class="line">CONFIG_PACKAGE_libffmpeg-audio-dec=y</span><br><span class="line">CONFIG_PACKAGE_libflac=y</span><br><span class="line">CONFIG_PACKAGE_libid3tag=y</span><br><span class="line">CONFIG_PACKAGE_libjpeg-turbo=y</span><br><span class="line">CONFIG_PACKAGE_libmaxminddb=y</span><br><span class="line">CONFIG_PACKAGE_libmbedtls=y</span><br><span class="line">CONFIG_PACKAGE_libncurses=y</span><br><span class="line">CONFIG_PACKAGE_libogg=y</span><br><span class="line">CONFIG_PACKAGE_libreadline=y</span><br><span class="line">CONFIG_PACKAGE_libsmartcols=y</span><br><span class="line">CONFIG_PACKAGE_libsqlite3=y</span><br><span class="line">CONFIG_PACKAGE_libss=y</span><br><span class="line">CONFIG_PACKAGE_libstdcpp=y</span><br><span class="line">CONFIG_PACKAGE_libudev-zero=y</span><br><span class="line">CONFIG_PACKAGE_libusb-1.0=y</span><br><span class="line">CONFIG_PACKAGE_libuv=y</span><br><span class="line">CONFIG_PACKAGE_libvorbis=y</span><br><span class="line">CONFIG_PACKAGE_lua-cjson=y</span><br><span class="line">CONFIG_PACKAGE_lua-maxminddb=y</span><br><span class="line">CONFIG_PACKAGE_luasocket=y</span><br><span class="line">CONFIG_PACKAGE_luci-app-hd-idle=y</span><br><span class="line">CONFIG_PACKAGE_luci-app-minidlna=y</span><br><span class="line">CONFIG_PACKAGE_luci-app-samba=y</span><br><span class="line"># CONFIG_PACKAGE_luci-app-ssr-plus is not set</span><br><span class="line"># CONFIG_PACKAGE_luci-app-unblockmusic is not set</span><br><span class="line">CONFIG_PACKAGE_luci-app-vssr=y</span><br><span class="line">CONFIG_PACKAGE_luci-app-vssr_INCLUDE_Kcptun=y</span><br><span class="line">CONFIG_PACKAGE_luci-app-vssr_INCLUDE_ShadowsocksR_Libev_Server=y</span><br><span class="line">CONFIG_PACKAGE_luci-app-vssr_INCLUDE_Trojan=y</span><br><span class="line">CONFIG_PACKAGE_luci-app-vssr_INCLUDE_Xray=y</span><br><span class="line">CONFIG_PACKAGE_luci-app-vssr_INCLUDE_Xray_plugin=y</span><br><span class="line">CONFIG_PACKAGE_luci-i18n-hd-idle-zh-cn=y</span><br><span class="line">CONFIG_PACKAGE_luci-i18n-minidlna-zh-cn=y</span><br><span class="line">CONFIG_PACKAGE_luci-i18n-samba-zh-cn=y</span><br><span class="line">CONFIG_PACKAGE_luci-i18n-vssr-zh-cn=y</span><br><span class="line">CONFIG_PACKAGE_luci-proto-ipv6=y</span><br><span class="line">CONFIG_PACKAGE_luci-theme-mcat=y</span><br><span class="line"># CONFIG_PACKAGE_microsocks is not set</span><br><span class="line">CONFIG_PACKAGE_minidlna=y</span><br><span class="line">CONFIG_PACKAGE_odhcp6c=y</span><br><span class="line">CONFIG_PACKAGE_odhcp6c_ext_cer_id=0</span><br><span class="line">CONFIG_PACKAGE_odhcpd-ipv6only=y</span><br><span class="line">CONFIG_PACKAGE_odhcpd_ipv6only_ext_cer_id=0</span><br><span class="line"># CONFIG_PACKAGE_resolveip is not set</span><br><span class="line">CONFIG_PACKAGE_samba36-server=y</span><br><span class="line">CONFIG_PACKAGE_shadowsocks-libev-ss-local=y</span><br><span class="line">CONFIG_PACKAGE_shadowsocks-libev-ss-redir=y</span><br><span class="line">CONFIG_PACKAGE_shadowsocksr-libev-ssr-server=y</span><br><span class="line">CONFIG_PACKAGE_simple-obfs=y</span><br><span class="line"># CONFIG_PACKAGE_tcping is not set</span><br><span class="line">CONFIG_PACKAGE_terminfo=y</span><br><span class="line">CONFIG_PACKAGE_trojan=y</span><br><span class="line">CONFIG_PACKAGE_usbids=y</span><br><span class="line">CONFIG_PACKAGE_usbutils=y</span><br><span class="line">CONFIG_PACKAGE_xray-core=y</span><br><span class="line">CONFIG_PACKAGE_xray-plugin=y</span><br><span class="line">CONFIG_SQLITE3_DYNAMIC_EXTENSIONS=y</span><br><span class="line">CONFIG_SQLITE3_FTS3=y</span><br><span class="line">CONFIG_SQLITE3_FTS4=y</span><br><span class="line">CONFIG_SQLITE3_FTS5=y</span><br><span class="line">CONFIG_SQLITE3_JSON1=y</span><br><span class="line">CONFIG_SQLITE3_RTREE=y</span><br><span class="line">CONFIG_boost-compile-visibility-hidden=y</span><br><span class="line">CONFIG_boost-runtime-shared=y</span><br><span class="line">CONFIG_boost-static-and-shared-libs=y</span><br><span class="line">CONFIG_boost-variant-release=y</span><br></pre></td></tr></table></figure>
+
+
+
+<p>​     </p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag"># 学习</a>
+              <a href="/tags/OpenWrt/" rel="tag"># OpenWrt</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/5/hexo%E7%AC%94%E8%AE%B0/" rel="prev" title="hexo笔记">
+      <i class="fa fa-chevron-left"></i> hexo笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/5/%E4%BB%8A%E6%97%A5%E8%AF%97%E8%AF%8D/" rel="next" title="获取今日诗词">
+      获取今日诗词 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">前言：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E7%BC%96%E8%AF%91%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">本地编译：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C%EF%BC%9A"><span class="nav-number">2.1.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E9%85%8D%E7%BD%AE%EF%BC%9A"><span class="nav-number">2.2.</span> <span class="nav-text">编译配置：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Github-Actions-%E4%BA%91%E7%BC%96%E8%AF%91%EF%BC%9A"><span class="nav-number">2.3.</span> <span class="nav-text">Github Actions 云编译：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E4%BB%B6R6220%E9%85%8D%E7%BD%AE%EF%BC%9A"><span class="nav-number">2.4.</span> <span class="nav-text">网件R6220配置：</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="WYC"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">WYC</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WYC</span>
+</div>
+
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+  var now = new Date();
+  function createtime() {
+      var grt= new Date("01/01/2022 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+      document.getElementById("timeDate").innerHTML = "Blog已运行 "+dnum+" 天 ";
+      document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+  }
+  setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+    </div>
+
+<!-- Eruda 手机网页前端调试面板 -->
+<script src="//cdn.jsdelivr.net/npm/eruda"></script>
+<script>eruda.init();</script>
+
+  <!-- particles.js container -->
+<div id="particles-js" style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #2A2A30;
+    z-index: -1;"></div>
+
+<!-- 动态背景特效 -->
+<script src="./assets/particles/particles.js"></script>
+<script src="./assets/particles/app.js"></script>
+
+<!-- Live2D -->
+<script src="./assets/live2D/autoload.js"></script>
+
+</body>
+</html>

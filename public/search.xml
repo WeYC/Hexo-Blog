@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Github基本使用</title>
+    <url>/posts/2/Github%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="一、与GitHub建立连接"><a href="#一、与GitHub建立连接" class="headerlink" title="一、与GitHub建立连接"></a>一、与GitHub建立连接</h2><ul>
+<li><p>配置Git</p>
+<p>首先在本地创建<code>ssh key；</code></p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">&quot;your_email@youremail.com&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>后面的<code>your_email@youremail.com</code>改为你在github上注册的邮箱，之后会要求确认路径和输入密码，我们这使用默认的一路回车就行。成功的话会在<code>~/</code>下生成<code>.ssh</code>文件夹，进去，打开<code>id_rsa.pub</code>，复制里面的<code>key</code>。</p>
+<p>回到github上，进入 Account Settings（账户配置），左边选择SSH Keys，Add SSH Key,title随便填，粘贴在你电脑上生成的key。</p>
+<span id="more"></span>
+
+<p>为了验证是否成功，在git bash下输入：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+
+<p>如果是第一次的会提示是否continue，输入yes就会看到：You’ve successfully authenticated, but GitHub does not provide shell access 。这就表示已成功连上github。</p>
+<p>接下来我们要做的就是把本地仓库传到github上去，在此之前还需要设置username和email，因为github每次commit都会记录他们。</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ git config --global user.name <span class="string">&quot;your name&quot;</span></span><br><span class="line">$ git config --global user.email <span class="string">&quot;your_email@youremail.com&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="二、上传代码到仓库"><a href="#二、上传代码到仓库" class="headerlink" title="二、上传代码到仓库"></a>二、上传代码到仓库</h2><ul>
+<li>…or create a new repository on the command line<br><code>git init</code><br><code>git add README.md</code><br><code>git commit -m &quot;first commit&quot;</code><br><code>git branch -M main</code><br><code>git remote add origin 仓库链接地址</code><br><code>git push -u origin main</code></li>
+<li>…or push an existing repository from the command line<br><code>git remote add origin 仓库链接地址</code><br><code>git branch -M main</code><br><code>git push -u origin main</code></li>
+</ul>
+<ol>
+<li><code>git init</code> 初始化本地仓库</li>
+<li><code>git add . or git add *</code> 添加要上传的文件</li>
+<li><code>git commit -m &quot;first commit&quot;</code> 添加更新说明</li>
+<li><code>git remote add origin 仓库链接地址</code> 把文件放到暂存区</li>
+<li><code>git branch -M main</code> 更改分支</li>
+<li><code>git push -u origin main</code> 上传、</li>
+<li>二次上传需要执行 <code>git add .</code> and <code>git commit -m &quot;first commit&quot;</code> 然后 <code>git push -u origin main</code></li>
+<li>如果仓库已有代码发生改变，需要先<code>git pull</code> 拉取更新，更新本地文件与仓库一直，再执行7.步骤</li>
+</ol>
+]]></content>
+      <categories>
+        <category>GitHub</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>GitHub</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Eruda 手机网页前端调试面板</title>
+    <url>/posts/3/Eruda-%E6%89%8B%E6%9C%BA%E7%BD%91%E9%A1%B5%E5%89%8D%E7%AB%AF%E8%B0%83%E8%AF%95%E9%9D%A2%E6%9D%BF/</url>
+    <content><![CDATA[<h1 id="Eruda-手机网页前端调试面板"><a href="#Eruda-手机网页前端调试面板" class="headerlink" title="Eruda 手机网页前端调试面板"></a><a href="https://github.com/liriliri/eruda"><strong>Eruda</strong> 手机网页前端调试面板</a></h1><img data-src="/posts/3/Eruda-%E6%89%8B%E6%9C%BA%E7%BD%91%E9%A1%B5%E5%89%8D%E7%AB%AF%E8%B0%83%E8%AF%95%E9%9D%A2%E6%9D%BF/screenshot.jpg" class="">
+
+ <span id="more"></span>
+
+<h2 id="快速上手"><a href="#快速上手" class="headerlink" title="快速上手"></a>快速上手</h2><p>通过CDN使用：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script src=<span class="string">&quot;//cdn.bootcdn.net/ajax/libs/eruda/2.3.3/eruda.js&quot;</span>&gt;&lt;/script&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span>eruda.init();<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>通过 npm 安装：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install eruda --save</span><br></pre></td></tr></table></figure>
+
+<p>在页面中加载脚本：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script src=<span class="string">&quot;node_modules/eruda/eruda.js&quot;</span>&gt;&lt;/script&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span>eruda.init();<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>JS 文件对于移动端来说略重（gzip 后大概 100kb）。建议通过 url 参数来控制是否加载调试器，比如：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">;(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> src = <span class="string">&#x27;//cdn.jsdelivr.net/npm/eruda&#x27;</span>;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="regexp">/eruda=true/</span>.<span class="title function_">test</span>(<span class="variable language_">window</span>.<span class="property">location</span>) &amp;&amp; <span class="variable language_">localStorage</span>.<span class="title function_">getItem</span>(<span class="string">&#x27;active-eruda&#x27;</span>) != <span class="string">&#x27;true&#x27;</span>) <span class="keyword">return</span>;</span><br><span class="line">    <span class="variable language_">document</span>.<span class="title function_">write</span>(<span class="string">&#x27;&lt;scr&#x27;</span> + <span class="string">&#x27;ipt src=&quot;&#x27;</span> + src + <span class="string">&#x27;&quot;&gt;&lt;/scr&#x27;</span> + <span class="string">&#x27;ipt&gt;&#x27;</span>);</span><br><span class="line">    <span class="variable language_">document</span>.<span class="title function_">write</span>(<span class="string">&#x27;&lt;scr&#x27;</span> + <span class="string">&#x27;ipt&gt;eruda.init();&lt;/scr&#x27;</span> + <span class="string">&#x27;ipt&gt;&#x27;</span>);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+<p>初始化时可以传入配置：</p>
+<ul>
+<li>container: 用于插件初始化的 Dom 元素，如果不设置，默认创建 div 作为容器直接置于 html 根结点下面。</li>
+<li>tool：指定要初始化哪些面板，默认加载所有。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> el = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;div&#x27;</span>);</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(el);</span><br><span class="line"></span><br><span class="line">eruda.<span class="title function_">init</span>(&#123;</span><br><span class="line">    <span class="attr">container</span>: el,</span><br><span class="line">    <span class="attr">tool</span>: [<span class="string">&#x27;console&#x27;</span>, <span class="string">&#x27;elements&#x27;</span>],</span><br><span class="line">    <span class="attr">useShadowDom</span>: <span class="literal">true</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NodeServer笔记</title>
+    <url>/posts/3/NodeServer%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="开发依赖库"><a href="#开发依赖库" class="headerlink" title="开发依赖库"></a>开发依赖库</h2><blockquote>
+<p>Express    开发框架</p>
+<p>Body-Parser    解析post请求</p>
+<p>Nodemon    自动更新包</p>
+<p>Sequelize    连接数据库</p>
+<p>Nodemailer    发送邮件</p>
+<p>Express-session    创建session</p>
+<p>Json Web Token 生成Token</p>
+</blockquote>
+ <span id="more"></span>
+
+<h2 id="登录验证"><a href="#登录验证" class="headerlink" title="登录验证"></a>登录验证</h2><blockquote>
+<p>token，session</p>
+<p>token，session在后端生成</p>
+<p>cookie、sessionsStorage、localStorage保存在浏览器</p>
+<h4 id="token-令牌，一个加密的字符串，一般身份验证，前后混合开发可使用session进行身份验证，session需要配合cookie"><a href="#token-令牌，一个加密的字符串，一般身份验证，前后混合开发可使用session进行身份验证，session需要配合cookie" class="headerlink" title="token: 令牌，一个加密的字符串，一般身份验证，前后混合开发可使用session进行身份验证，session需要配合cookie"></a>token: 令牌，一个加密的字符串，一般身份验证，前后混合开发可使用session进行身份验证，session需要配合cookie</h4></blockquote>
+<h2 id="Express"><a href="#Express" class="headerlink" title="Express"></a>Express</h2><blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 引入包</span></span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>)</span><br><span class="line"><span class="comment">// 挂在实例</span></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>()</span><br><span class="line"><span class="comment">//路由</span></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/&#x27;</span>, <span class="keyword">function</span> (<span class="params">req, res</span>) &#123;</span><br><span class="line">res.<span class="title function_">send</span>(<span class="string">&#x27;Hello World&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// 端口</span></span><br><span class="line">app.<span class="title function_">listen</span>(<span class="number">3000</span>)</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="Body-Parser-解析post请求"><a href="#Body-Parser-解析post请求" class="headerlink" title="Body-Parser    解析post请求"></a>Body-Parser    解析post请求</h2><blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&gt;<span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>)</span><br><span class="line">&gt;<span class="keyword">var</span> bodyParser = <span class="built_in">require</span>(<span class="string">&#x27;body-parser&#x27;</span>)</span><br><span class="line"></span><br><span class="line">&gt;<span class="keyword">var</span> app = <span class="title function_">express</span>()</span><br><span class="line"></span><br><span class="line">&gt;<span class="comment">//一般只需要下面两个</span></span><br><span class="line"></span><br><span class="line">&gt;<span class="comment">// parse application/x-www-form-urlencoded</span></span><br><span class="line">&gt;app.<span class="title function_">use</span>(bodyParser.<span class="title function_">urlencoded</span>(&#123; <span class="attr">extended</span>: <span class="literal">false</span> &#125;))</span><br><span class="line"></span><br><span class="line">&gt;<span class="comment">// parse application/json</span></span><br><span class="line">&gt;app.<span class="title function_">use</span>(bodyParser.<span class="title function_">json</span>())</span><br><span class="line"></span><br><span class="line">&gt;app.<span class="title function_">use</span>(<span class="keyword">function</span> (<span class="params">req, res</span>) &#123;</span><br><span class="line">&gt;res.<span class="title function_">setHeader</span>(<span class="string">&#x27;Content-Type&#x27;</span>, <span class="string">&#x27;text/plain&#x27;</span>)</span><br><span class="line">&gt;res.<span class="title function_">write</span>(<span class="string">&#x27;you posted:\n&#x27;</span>)</span><br><span class="line">&gt;res.<span class="title function_">end</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(req.<span class="property">body</span>, <span class="literal">null</span>, <span class="number">2</span>))</span><br><span class="line">&gt;&#125;)</span><br></pre></td></tr></table></figure>
+
+</blockquote>
+<h2 id="Sequelize连接数据库-中文文档"><a href="#Sequelize连接数据库-中文文档" class="headerlink" title="Sequelize连接数据库 中文文档"></a>Sequelize连接数据库 <a href="https://www.sequelize.cn/">中文文档</a></h2><blockquote>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用npm</span></span><br><span class="line">$ npm i sequelize</span><br><span class="line"><span class="comment"># 驱动包</span></span><br><span class="line">$ npm install --save pg pg-hstore <span class="comment"># Postgres</span></span><br><span class="line">$ npm install --save mysql2</span><br><span class="line">$ npm install --save mariadb</span><br><span class="line">$ npm install --save sqlite3</span><br><span class="line">$ npm install --save tedious <span class="comment"># Microsoft SQL Server```</span></span><br><span class="line">$ npm install --save sequelize</span><br></pre></td></tr></table></figure>
+
+</blockquote>
+<h4 id="连接到数据库"><a href="#连接到数据库" class="headerlink" title="连接到数据库"></a>连接到数据库</h4><blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&gt;<span class="keyword">const</span> &#123; <span class="title class_">Sequelize</span> &#125; = <span class="built_in">require</span>(<span class="string">&#x27;sequelize&#x27;</span>);</span><br><span class="line">&gt;<span class="comment">// 方法 3: 分别传递参数 (其它数据库)</span></span><br><span class="line">&gt;<span class="keyword">const</span> sequelize = <span class="keyword">new</span> <span class="title class_">Sequelize</span>(<span class="string">&#x27;database&#x27;</span>, <span class="string">&#x27;username&#x27;</span>, <span class="string">&#x27;password&#x27;</span>, &#123;</span><br><span class="line">&gt;<span class="attr">host</span>: <span class="string">&#x27;localhost&#x27;</span>,</span><br><span class="line">&gt;<span class="attr">dialect</span>: <span class="comment">/* 选择 &#x27;mysql&#x27; | &#x27;mariadb&#x27; | &#x27;postgres&#x27; | &#x27;mssql&#x27; 其一 */</span></span><br><span class="line">&gt;&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+</blockquote>
+<h4 id="测试连接"><a href="#测试连接" class="headerlink" title="测试连接"></a>测试连接</h4><blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&gt;<span class="keyword">try</span> &#123;</span><br><span class="line">&gt;<span class="keyword">await</span> sequelize.<span class="title function_">authenticate</span>();</span><br><span class="line">&gt;<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Connection has been established successfully.&#x27;</span>);</span><br><span class="line">&gt;&#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">&gt;<span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;Unable to connect to the database:&#x27;</span>, error);</span><br><span class="line">&gt;&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="关闭连接"><a href="#关闭连接" class="headerlink" title="关闭连接"></a>关闭连接</h4><blockquote>
+<p>默认情况下,Sequelize 将保持连接打开状态,并对所有查询使用相同的连接. 如果你需要关闭连接,请调用 sequelize.close()(这是异步的并返回一个 Promise).</p>
+</blockquote>
+<h4 id="模型基础"><a href="#模型基础" class="headerlink" title="模型基础"></a>模型基础</h4><h5 id="使用-sequelize-define"><a href="#使用-sequelize-define" class="headerlink" title="使用 sequelize.define"></a>使用 sequelize.define</h5><blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; <span class="title class_">Sequelize</span>, <span class="title class_">DataTypes</span> &#125; = <span class="built_in">require</span>(<span class="string">&#x27;sequelize&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> sequelize = <span class="keyword">new</span> <span class="title class_">Sequelize</span>(<span class="string">&#x27;sqlite::memory:&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">User</span> = sequelize.<span class="title function_">define</span>(<span class="string">&#x27;User&#x27;</span>, &#123;</span><br><span class="line"><span class="comment">// 在这里定义模型属性</span></span><br><span class="line"><span class="attr">firstName</span>: &#123;</span><br><span class="line"> <span class="attr">type</span>: <span class="title class_">DataTypes</span>.<span class="property">STRING</span>,</span><br><span class="line"> <span class="attr">allowNull</span>: <span class="literal">false</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="attr">lastName</span>: &#123;</span><br><span class="line"> <span class="attr">type</span>: <span class="title class_">DataTypes</span>.<span class="property">STRING</span></span><br><span class="line"> <span class="comment">// allowNull 默认为 true</span></span><br><span class="line">&#125;</span><br><span class="line">&#125;, &#123;</span><br><span class="line"><span class="comment">// 这是其他模型参数</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// `sequelize.define` 会返回模型</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">User</span> === sequelize.<span class="property">models</span>.<span class="property">User</span>); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h5 id="扩展-Model"><a href="#扩展-Model" class="headerlink" title="扩展 Model"></a>扩展 Model</h5><blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; <span class="title class_">Sequelize</span>, <span class="title class_">DataTypes</span>, <span class="title class_">Model</span> &#125; = <span class="built_in">require</span>(<span class="string">&#x27;sequelize&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> sequelize = <span class="keyword">new</span> <span class="title class_">Sequelize</span>(<span class="string">&#x27;sqlite::memory:&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Model</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="title class_">User</span>.<span class="title function_">init</span>(&#123;</span><br><span class="line"><span class="comment">// 在这里定义模型属性</span></span><br><span class="line"><span class="attr">firstName</span>: &#123;</span><br><span class="line"> <span class="attr">type</span>: <span class="title class_">DataTypes</span>.<span class="property">STRING</span>,</span><br><span class="line"> <span class="attr">allowNull</span>: <span class="literal">false</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="attr">lastName</span>: &#123;</span><br><span class="line"> <span class="attr">type</span>: <span class="title class_">DataTypes</span>.<span class="property">STRING</span></span><br><span class="line"> <span class="comment">// allowNull 默认为 true</span></span><br><span class="line">&#125;</span><br><span class="line">&#125;, &#123;</span><br><span class="line"><span class="comment">// 这是其他模型参数</span></span><br><span class="line">sequelize, <span class="comment">// 我们需要传递连接实例</span></span><br><span class="line"><span class="attr">modelName</span>: <span class="string">&#x27;User&#x27;</span> <span class="comment">// 我们需要选择模型名称</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义的模型是类本身</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">User</span> === sequelize.<span class="property">models</span>.<span class="property">User</span>); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="Nodemailer-发送邮件"><a href="#Nodemailer-发送邮件" class="headerlink" title="Nodemailer    发送邮件"></a>Nodemailer    发送邮件</h2><blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="meta">&quot;use strict&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> nodemailer = <span class="built_in">require</span>(<span class="string">&quot;nodemailer&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// async..await is not allowed in global scope, must use a wrapper</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">main</span>(<span class="params"></span>) &#123;</span><br><span class="line"><span class="comment">// Generate test SMTP service account from ethereal.email</span></span><br><span class="line"><span class="comment">// Only needed if you don&#x27;t have a real mail account for testing</span></span><br><span class="line"><span class="keyword">let</span> testAccount = <span class="keyword">await</span> nodemailer.<span class="title function_">createTestAccount</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// create reusable transporter object using the default SMTP transport</span></span><br><span class="line"><span class="keyword">let</span> transporter = nodemailer.<span class="title function_">createTransport</span>(&#123;</span><br><span class="line"> <span class="attr">host</span>: <span class="string">&quot;smtp.ethereal.email&quot;</span>,</span><br><span class="line"> <span class="attr">port</span>: <span class="number">587</span>,</span><br><span class="line"> <span class="attr">secure</span>: <span class="literal">false</span>, <span class="comment">// true for 465, false for other ports</span></span><br><span class="line"> <span class="attr">auth</span>: &#123;</span><br><span class="line">   <span class="attr">user</span>: testAccount.<span class="property">user</span>, <span class="comment">// generated ethereal user</span></span><br><span class="line">   <span class="attr">pass</span>: testAccount.<span class="property">pass</span>, <span class="comment">// generated ethereal password</span></span><br><span class="line"> &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// send mail with defined transport object</span></span><br><span class="line"><span class="keyword">let</span> info = <span class="keyword">await</span> transporter.<span class="title function_">sendMail</span>(&#123;</span><br><span class="line"> <span class="attr">from</span>: <span class="string">&#x27;&quot;Fred Foo 👻&quot; &lt;foo@example.com&gt;&#x27;</span>, <span class="comment">// sender address</span></span><br><span class="line"> <span class="attr">to</span>: <span class="string">&quot;bar@example.com, baz@example.com&quot;</span>, <span class="comment">// list of receivers</span></span><br><span class="line"> <span class="attr">subject</span>: <span class="string">&quot;Hello ✔&quot;</span>, <span class="comment">// Subject line</span></span><br><span class="line"> <span class="attr">text</span>: <span class="string">&quot;Hello world?&quot;</span>, <span class="comment">// plain text body</span></span><br><span class="line"> <span class="attr">html</span>: <span class="string">&quot;&lt;b&gt;Hello world?&lt;/b&gt;&quot;</span>, <span class="comment">// html body</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Message sent: %s&quot;</span>, info.<span class="property">messageId</span>);</span><br><span class="line"><span class="comment">// Message sent: &lt;b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Preview only available when sending through an Ethereal account</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Preview URL: %s&quot;</span>, nodemailer.<span class="title function_">getTestMessageUrl</span>(info));</span><br><span class="line"><span class="comment">// Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">main</span>().<span class="title function_">catch</span>(<span class="variable language_">console</span>.<span class="property">error</span>);</span><br></pre></td></tr></table></figure>
+</blockquote>
+]]></content>
+      <categories>
+        <category>node</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>node</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>OpenWrt的编译笔记</title>
+    <url>/posts/4/OpenWrt%E7%9A%84%E7%BC%96%E8%AF%91%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h2><p>   OpenWrt的固件编译基于<a href="https://github.com/coolsnowwolf/lede">Lean</a>的Openwrt源码仓库进行编译。</p>
+<p>   编译方式：<u>本地编译</u>，<u><a href="https://github.com/P3TERX/Actions-OpenWrt">Github Actions</a></u> 云编译。</p>
+<hr>
+<h2 id="本地编译："><a href="#本地编译：" class="headerlink" title="本地编译："></a>本地编译：</h2><ol>
+<li><h3 id="准备工作："><a href="#准备工作：" class="headerlink" title="准备工作："></a>准备工作：</h3></li>
+<li><ul>
+<li><p>科学上网</p>
+</li>
+<li><p>Ubuntu TLS 20.04</p>
+</li>
+<li><p>支持OpenWrt的设备例如网件R6220, 斐讯K2P，小米3C, 极路由1S，联想new3等。</p>
+</li>
+<li><p>高性能X86软路由设备。</p>
+</li>
+</ul>
+</li>
+<li><h3 id="编译配置："><a href="#编译配置：" class="headerlink" title="编译配置："></a>编译配置：</h3><ul>
+<li><p>命令行输入: <code>sudo apt-get update</code> 然后输入 <code>sudo apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl swig rsync</code></p>
+</li>
+<li><p>使用 <code>git clone https://github.com/coolsnowwolf/lede</code> 命令下载好源代码，然后 <code>cd lede</code> 进入目录</p>
+</li>
+</ul>
+</li>
+</ol>
+<span id="more"></span>
+
+<ul>
+<li>命令行输入: <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./scripts/feeds update -a</span><br><span class="line">./scripts/feeds install -a</span><br><span class="line">make menuconfig (配置.config)</span><br></pre></td></tr></table></figure>
+</li>
+<li><code>make -j8 download V=s</code> 下载dl库（国内请尽量全局科学上网）</li>
+<li>输入 <code>make -j1 V=s</code> （-j1 后面是线程数。第一次编译推荐用单线程）即可开始编译你要的固件了。</li>
+<li>温馨提示： ​        首次编译固件时，不要大量安装插件，否则编译会容易报错，大部分报错有可能是依赖没有下载全面说导致的，或者是插件冲突，在加入插件时应当考虑设备Rom容量和Ram，加入大量插件会使编译出的固件包太大而无法刷入设备，Ram不够插件运行的等。</li>
+</ul>
+<ol>
+<li><h3 id="Github-Actions-云编译："><a href="#Github-Actions-云编译：" class="headerlink" title="Github Actions 云编译："></a>Github Actions 云编译：</h3><ul>
+<li><p>使用<a href="https://github.com/P3TERX">P3TERX</a>的云编译脚本，点击Fork</p>
+</li>
+<li><p>脚本<a href="https://p3terx.com/archives/build-openwrt-with-github-actions.html">文档</a>地址</p>
+</li>
+<li><p>自定义 feeds 配置文件</p>
+<p>   把 <code>feeds.conf.default</code> 文件放入仓库根目录即可，它会覆盖 Open­Wrt 源码目录下的相关文件。</p>
+</li>
+<li><p>如果没有.config配置文件可以使用SSH 连接到 Actions</p>
+<p>   通过 tmate 连接到 GitHub Ac­tions 虚拟服务器环境，可直接进行 <code>make menuconfig</code> 操作生成编译配置，或者任意的客制化操作。也就是说，你不需要再自己搭建编译环境了。这可能改变之前所有使用 GitHub Ac­tions 的编译 Open­Wrt 方式。</p>
+<ul>
+<li><p>在<code>Run Workflow</code>时把<code>SSH connection to Actions</code>的值改为<code>true</code>（或者也可以不修改，而是通过 <a href="https://p3terx.com/archives/github-actions-manual-trigger.html#toc_2">webhook 方式</a>发送带有<code>ssh</code>触发关键词的请求。）</p>
+</li>
+<li><p>在触发工作流程后，在 Actions 日志页面等待执行到<code>SSH connection to Actions</code>步骤，会出现类似下面的信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">To connect to this session copy-n-paste the following into a terminal or browser:</span><br><span class="line"></span><br><span class="line">ssh Y26QeagDtsPXp2mT6me5cnMRd@nyc1.tmate.io</span><br><span class="line"></span><br><span class="line">https://tmate.io/t/Y26QeagDtsPXp2mT6me5cnMRd</span><br></pre></td></tr></table></figure></li>
+<li><p>复制 SSH 连接命令粘贴到终端内执行，或者复制链接在浏览器中打开使用网页终端。（网页终端可能会遇到黑屏的情况，按 <code>Ctrl</code>+<code>C</code> 即可）</p>
+</li>
+<li><p><code>cd openwrt &amp;&amp; make menuconfig</code></p>
+</li>
+<li><p>完成后按<code>Ctrl</code>+<code>D</code>组合键或执行<code>exit</code>命令退出，后续编译工作将自动进行。</p>
+</li>
+<li><p>**提示:**固件目录下有个<code>config.seed</code>或者<code>config.buildinfo</code>文件，如果你需要再次编译可以使用它。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><h3 id="网件R6220配置："><a href="#网件R6220配置：" class="headerlink" title="网件R6220配置："></a>网件R6220配置：</h3><ul>
+<li><p>集成Hello world科学上网</p>
+</li>
+<li><p>Samba网络共享</p>
+</li>
+<li><p>miniDLAN</p>
+</li>
+<li><p>UPnP</p>
+</li>
+<li><p>动态DDNS</p>
+</li>
+<li><p>上网时间控制</p>
+</li>
+<li><p>FTP服务器</p>
+</li>
+<li><p>硬盘休眠</p>
+</li>
+<li><p>Turbo ACC 网络加速</p>
+</li>
+<li><p>USB储存设备挂载</p>
+<ul>
+<li><p>支持 USB1，USB2，USB3</p>
+</li>
+<li><p>支持exFAT，ext4，NTFS，VFAT(FAT32)</p>
+</li>
+<li><p>支持自动挂载</p>
+</li>
+<li><p>热插拔</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CONFIG_TARGET_ramips=y</span><br><span class="line">CONFIG_TARGET_ramips_mt7621=y</span><br><span class="line">CONFIG_TARGET_ramips_mt7621_DEVICE_netgear_r6220=y</span><br><span class="line">CONFIG_PACKAGE_6in4=y</span><br><span class="line">CONFIG_PACKAGE_SAMBA_MAX_DEBUG_LEVEL=-1</span><br><span class="line">CONFIG_PACKAGE_badblocks=y</span><br><span class="line">CONFIG_PACKAGE_bash=y</span><br><span class="line">CONFIG_PACKAGE_boost=y</span><br><span class="line">CONFIG_PACKAGE_boost-date_time=y</span><br><span class="line">CONFIG_PACKAGE_boost-program_options=y</span><br><span class="line">CONFIG_PACKAGE_boost-system=y</span><br><span class="line"># CONFIG_PACKAGE_dns2socks is not set</span><br><span class="line">CONFIG_PACKAGE_e2fsprogs=y</span><br><span class="line">CONFIG_PACKAGE_fdisk=y</span><br><span class="line">CONFIG_PACKAGE_hd-idle=y</span><br><span class="line">CONFIG_PACKAGE_ip6tables=y</span><br><span class="line">CONFIG_PACKAGE_ipt2socks=y</span><br><span class="line">CONFIG_PACKAGE_ipv6helper=y</span><br><span class="line">CONFIG_PACKAGE_kcptun-client=y</span><br><span class="line">CONFIG_PACKAGE_kcptun-config=y</span><br><span class="line">CONFIG_PACKAGE_kmod-crypto-crc32c=y</span><br><span class="line">CONFIG_PACKAGE_kmod-fs-exfat=y</span><br><span class="line">CONFIG_PACKAGE_kmod-fs-ext4=y</span><br><span class="line">CONFIG_PACKAGE_kmod-fs-ntfs=y</span><br><span class="line">CONFIG_PACKAGE_kmod-fs-vfat=y</span><br><span class="line">CONFIG_PACKAGE_kmod-ipt-nat6=y</span><br><span class="line">CONFIG_PACKAGE_kmod-iptunnel=y</span><br><span class="line">CONFIG_PACKAGE_kmod-iptunnel4=y</span><br><span class="line">CONFIG_PACKAGE_kmod-lib-crc16=y</span><br><span class="line">CONFIG_PACKAGE_kmod-nf-nat6=y</span><br><span class="line">CONFIG_PACKAGE_kmod-nls-cp437=y</span><br><span class="line">CONFIG_PACKAGE_kmod-nls-iso8859-1=y</span><br><span class="line">CONFIG_PACKAGE_kmod-nls-utf8=y</span><br><span class="line">CONFIG_PACKAGE_kmod-scsi-core=y</span><br><span class="line">CONFIG_PACKAGE_kmod-sit=y</span><br><span class="line">CONFIG_PACKAGE_kmod-usb-ehci=y</span><br><span class="line">CONFIG_PACKAGE_kmod-usb-ohci=y</span><br><span class="line">CONFIG_PACKAGE_kmod-usb-storage=y</span><br><span class="line">CONFIG_PACKAGE_kmod-usb-storage-extras=y</span><br><span class="line">CONFIG_PACKAGE_kmod-usb-uhci=y</span><br><span class="line">CONFIG_PACKAGE_kmod-usb2=y</span><br><span class="line">CONFIG_PACKAGE_libblkid=y</span><br><span class="line">CONFIG_PACKAGE_libbz2=y</span><br><span class="line">CONFIG_PACKAGE_libcomerr=y</span><br><span class="line">CONFIG_PACKAGE_libevdev=y</span><br><span class="line">CONFIG_PACKAGE_libexif=y</span><br><span class="line">CONFIG_PACKAGE_libext2fs=y</span><br><span class="line">CONFIG_PACKAGE_libfdisk=y</span><br><span class="line">CONFIG_PACKAGE_libffmpeg-audio-dec=y</span><br><span class="line">CONFIG_PACKAGE_libflac=y</span><br><span class="line">CONFIG_PACKAGE_libid3tag=y</span><br><span class="line">CONFIG_PACKAGE_libjpeg-turbo=y</span><br><span class="line">CONFIG_PACKAGE_libmaxminddb=y</span><br><span class="line">CONFIG_PACKAGE_libmbedtls=y</span><br><span class="line">CONFIG_PACKAGE_libncurses=y</span><br><span class="line">CONFIG_PACKAGE_libogg=y</span><br><span class="line">CONFIG_PACKAGE_libreadline=y</span><br><span class="line">CONFIG_PACKAGE_libsmartcols=y</span><br><span class="line">CONFIG_PACKAGE_libsqlite3=y</span><br><span class="line">CONFIG_PACKAGE_libss=y</span><br><span class="line">CONFIG_PACKAGE_libstdcpp=y</span><br><span class="line">CONFIG_PACKAGE_libudev-zero=y</span><br><span class="line">CONFIG_PACKAGE_libusb-1.0=y</span><br><span class="line">CONFIG_PACKAGE_libuv=y</span><br><span class="line">CONFIG_PACKAGE_libvorbis=y</span><br><span class="line">CONFIG_PACKAGE_lua-cjson=y</span><br><span class="line">CONFIG_PACKAGE_lua-maxminddb=y</span><br><span class="line">CONFIG_PACKAGE_luasocket=y</span><br><span class="line">CONFIG_PACKAGE_luci-app-hd-idle=y</span><br><span class="line">CONFIG_PACKAGE_luci-app-minidlna=y</span><br><span class="line">CONFIG_PACKAGE_luci-app-samba=y</span><br><span class="line"># CONFIG_PACKAGE_luci-app-ssr-plus is not set</span><br><span class="line"># CONFIG_PACKAGE_luci-app-unblockmusic is not set</span><br><span class="line">CONFIG_PACKAGE_luci-app-vssr=y</span><br><span class="line">CONFIG_PACKAGE_luci-app-vssr_INCLUDE_Kcptun=y</span><br><span class="line">CONFIG_PACKAGE_luci-app-vssr_INCLUDE_ShadowsocksR_Libev_Server=y</span><br><span class="line">CONFIG_PACKAGE_luci-app-vssr_INCLUDE_Trojan=y</span><br><span class="line">CONFIG_PACKAGE_luci-app-vssr_INCLUDE_Xray=y</span><br><span class="line">CONFIG_PACKAGE_luci-app-vssr_INCLUDE_Xray_plugin=y</span><br><span class="line">CONFIG_PACKAGE_luci-i18n-hd-idle-zh-cn=y</span><br><span class="line">CONFIG_PACKAGE_luci-i18n-minidlna-zh-cn=y</span><br><span class="line">CONFIG_PACKAGE_luci-i18n-samba-zh-cn=y</span><br><span class="line">CONFIG_PACKAGE_luci-i18n-vssr-zh-cn=y</span><br><span class="line">CONFIG_PACKAGE_luci-proto-ipv6=y</span><br><span class="line">CONFIG_PACKAGE_luci-theme-mcat=y</span><br><span class="line"># CONFIG_PACKAGE_microsocks is not set</span><br><span class="line">CONFIG_PACKAGE_minidlna=y</span><br><span class="line">CONFIG_PACKAGE_odhcp6c=y</span><br><span class="line">CONFIG_PACKAGE_odhcp6c_ext_cer_id=0</span><br><span class="line">CONFIG_PACKAGE_odhcpd-ipv6only=y</span><br><span class="line">CONFIG_PACKAGE_odhcpd_ipv6only_ext_cer_id=0</span><br><span class="line"># CONFIG_PACKAGE_resolveip is not set</span><br><span class="line">CONFIG_PACKAGE_samba36-server=y</span><br><span class="line">CONFIG_PACKAGE_shadowsocks-libev-ss-local=y</span><br><span class="line">CONFIG_PACKAGE_shadowsocks-libev-ss-redir=y</span><br><span class="line">CONFIG_PACKAGE_shadowsocksr-libev-ssr-server=y</span><br><span class="line">CONFIG_PACKAGE_simple-obfs=y</span><br><span class="line"># CONFIG_PACKAGE_tcping is not set</span><br><span class="line">CONFIG_PACKAGE_terminfo=y</span><br><span class="line">CONFIG_PACKAGE_trojan=y</span><br><span class="line">CONFIG_PACKAGE_usbids=y</span><br><span class="line">CONFIG_PACKAGE_usbutils=y</span><br><span class="line">CONFIG_PACKAGE_xray-core=y</span><br><span class="line">CONFIG_PACKAGE_xray-plugin=y</span><br><span class="line">CONFIG_SQLITE3_DYNAMIC_EXTENSIONS=y</span><br><span class="line">CONFIG_SQLITE3_FTS3=y</span><br><span class="line">CONFIG_SQLITE3_FTS4=y</span><br><span class="line">CONFIG_SQLITE3_FTS5=y</span><br><span class="line">CONFIG_SQLITE3_JSON1=y</span><br><span class="line">CONFIG_SQLITE3_RTREE=y</span><br><span class="line">CONFIG_boost-compile-visibility-hidden=y</span><br><span class="line">CONFIG_boost-runtime-shared=y</span><br><span class="line">CONFIG_boost-static-and-shared-libs=y</span><br><span class="line">CONFIG_boost-variant-release=y</span><br></pre></td></tr></table></figure>
+
+
+
+<p>​     </p>
+]]></content>
+      <categories>
+        <category>OpenWrt</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>OpenWrt</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/posts/4/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>hexo文章内嵌HTML页面实例</title>
+    <url>/posts/4/hexo%E6%96%87%E7%AB%A0%E5%86%85%E5%B5%8CHTML%E9%A1%B5%E9%9D%A2%E5%AE%9E%E4%BE%8B/</url>
+    <content><![CDATA[<h6 id="使用iframe标签内嵌HTML页面。"><a href="#使用iframe标签内嵌HTML页面。" class="headerlink" title="使用iframe标签内嵌HTML页面。"></a>使用iframe标签内嵌HTML页面。</h6><iframe src="https://weyc.github.io/live2d-widget/" width="100%" height="600" frameborder="0"></iframe>
+
+
+
+ <span id="more"></span>
+
+]]></content>
+      <categories>
+        <category>HTML</category>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>HTML</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo安装教程</title>
+    <url>/posts/4/hexo%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/</url>
+    <content><![CDATA[<h2 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h2><p>&ensp;&ensp;&ensp;&ensp;这是我折腾Hexo的记录记录需要用到的知识。</p>
+<hr>
+<ol>
+<li><p>本地运行环境配置</p>
+<ul>
+<li><p>Node.Js 10+</p>
+<ol>
+<li>安装hexo-cli  $ npm install -g hexo-cli （ -g 全局安装 ）</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<span id="more"></span>
+
+<ul>
+<li><p>Windows下安装Git程序</p>
+</li>
+<li><p><a href="www.github.com">GitHub</a>创建代码仓库 </p>
+<ol>
+<li>新建的仓库 Repository name 名称要和账号的名称一致 后面加上 github.io</li>
+</ol>
+<img data-src="/posts/4/hexo%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/image-20220107192509368.png" class="" title="新建的仓库image">
+
+<ol start="2">
+<li>选择 Pblic （公开）</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h2 id="开始："><a href="#开始：" class="headerlink" title="开始："></a>开始：</h2><ol start="2">
+<li><p>在Blog目录下 右键打开 Git Bash Here</p>
+</li>
+<li><p>输入命令$ hexo init初始化 将自动下载hexo的文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">├── _config.yml</span><br><span class="line">├── package.json</span><br><span class="line">├── scaffolds</span><br><span class="line">├── source</span><br><span class="line">|   ├── _drafts</span><br><span class="line">|   └── _posts</span><br><span class="line">└── themes</span><br></pre></td></tr></table></figure></li>
+</ol>
+<ol start="4">
+<li><p>输入命令$ npm install 下载相关依赖</p>
+</li>
+<li><p>cd到Blog目录下安装hexo-deployer-git（ 重要！用于发布到Github上 ）</p>
+<p><code>$ npm install hexo-deployer-git --save</code></p>
+</li>
+<li><p>输入命令$ hexo generate （ 简写hexo g ）生成静态文件</p>
+</li>
+<li><p>输入命令$ hexo server（ 简写hexo s ）本地运行查看效果</p>
+</li>
+<li><p>配置 _config.yml 文件</p>
+<ul>
+<li><p>在最后的deploy代码处为</p>
+<p># Deployment</p>
+<p>## Docs: <a href="https://hexo.io/docs/one-command-deployment">https://hexo.io/docs/one-command-deployment</a></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">	type: git</span><br><span class="line"> 	</span><br><span class="line"> 	repository: https://github.com/WeYC/WeYC.github.io.git  #代码仓库地址</span><br><span class="line"> 	</span><br><span class="line"> 	branch: main #分支</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="Git基本使用"><a href="#Git基本使用" class="headerlink" title="Git基本使用"></a>Git基本使用</h2><ul>
+<li><p>配置Git</p>
+<p>首先在本地创建<code>ssh key；</code></p>
+<p><code>$ ssh-keygen -t rsa -C &quot;your_email@youremail.com&quot;</code></p>
+</li>
+<li><p>后面的<code>your_email@youremail.com</code>改为你在github上注册的邮箱，之后会要求确认路径和输入密码，我们这使用默认的一路回车就行。成功的话会在<code>~/</code>下生成<code>.ssh</code>文件夹，进去，打开<code>id_rsa.pub</code>，复制里面的<code>key</code>。</p>
+</li>
+<li><p>回到github上，进入 Account Settings（账户配置），左边选择SSH Keys，Add SSH Key,title随便填，粘贴在你电脑上生成的key。</p>
+</li>
+<li><p>为了验证是否成功，在git bash下输入：</p>
+<p><code>$ ssh -T git@github.com</code></p>
+</li>
+</ul>
+<ul>
+<li><p>如果是第一次的会提示是否continue，输入yes就会看到：You’ve successfully authenticated, but GitHub does not provide shell access 。这就表示已成功连上github。</p>
+</li>
+<li><p>接下来我们要做的就是把本地仓库传到github上去，在此之前还需要设置username和email，因为github每次commit都会记录他们。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git config --global user.name &quot;your name&quot; </span><br><span class="line">$ git config --global user.email &quot;your_email@youremail.com&quot; </span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="8">
+<li>输入命令$ hexo deploy（简写hexo d）推送到代码仓库</li>
+</ol>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo笔记</title>
+    <url>/posts/5/hexo%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h2><p>​        Hexo的使用笔记</p>
+<h2 id="基本配置："><a href="#基本配置：" class="headerlink" title="基本配置："></a>基本配置：</h2><p>​        配置文件_config.yml</p>
+<h2 id="写作："><a href="#写作：" class="headerlink" title="写作："></a>写作：</h2><ul>
+<li><p>使用<code>&lt;!--more--&gt;</code>截取文章内容使在首页不完全显示。</p>
+</li>
+<li><p>启用资源文件夹，打开后每新建一篇文章都会自动创建对应的文件夹</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> _config.yml</span><br><span class="line">post_asset_folder: true</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>​        相对路径引用的标签插件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;% asset_path slug %&#125;</span><br><span class="line">&#123;% asset_img slug [title] %&#125;</span><br><span class="line">&#123;% asset_link slug [title] %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>正确的引用图片方式是使用下列的标签插件而不是 markdown ：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;% asset_img example.jpg This is an example image %&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Hexo-Themes-Next主题："><a href="#Hexo-Themes-Next主题：" class="headerlink" title="Hexo-Themes-Next主题："></a>Hexo-Themes-Next主题：</h2><ul>
+<li><p>配置：</p>
+<ol>
+<li><p>cd 到 Blog目录下的 themes，执行 <code>git clone https://github.com/iissnan/hexo-theme-next themes/next </code>下载主题文件</p>
+</li>
+<li><p>修改_config.yml里的themes字段 <code>theme: next</code></p>
+</li>
+<li><p>验证主题一次输入以下命令：</p>
+</li>
+</ol>
+</li>
+</ul>
+<p>   ​        <code>hexo clean</code>清除已经生成的静态文件</p>
+<p>   ​        <code>hexo g</code> 编译生成静态文件</p>
+<p>   ​        <code>hexo s</code>部署到本地服务器，在浏览器输入<a href="http://localhost:4000打开页面">http://localhost:4000打开页面</a></p>
+<p>   ​        <code>hexo d</code>上传到Github</p>
+<h2 id="美化主题："><a href="#美化主题：" class="headerlink" title="美化主题："></a>美化主题：</h2><ol>
+<li><p>移除底部的强力驱动：</p>
+<p>​        _config.yml文件<code>footer</code>字段把 <code>powered:  true</code>改为<code>false</code>。 </p>
+<p>​        或</p>
+<p>​        打开<code>Blog/themes\next\layout\_partials\footer.swig</code>文件，下拉到底部注释一下代码：</p>
+</li>
+</ol>
+   <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!--</span><br><span class="line">&#123;%- if theme.footer.powered %&#125;</span><br><span class="line">  &lt;div class=&quot;powered-by&quot;&gt;</span><br><span class="line">    &#123;%- set next_site = &#x27;https://theme-next.org&#x27; %&#125;</span><br><span class="line">    &#123;%- if theme.scheme !== &#x27;Gemini&#x27; %&#125;</span><br><span class="line">      &#123;%- set next_site = &#x27;https://&#x27; + theme.scheme | lower + &#x27;.theme-next.org&#x27; %&#125;</span><br><span class="line">    &#123;%- endif %&#125;</span><br><span class="line">    &#123;&#123;- __(&#x27;footer.powered&#x27;, next_url(&#x27;https://hexo.io&#x27;, &#x27;Hexo&#x27;, &#123;class: &#x27;theme-link&#x27;&#125;) + &#x27; &amp; &#x27; + next_url(next_site, &#x27;NexT.&#x27; + theme.scheme, &#123;class: &#x27;theme-link&#x27;&#125;)) &#125;&#125;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&#123;%- endif %&#125;</span><br><span class="line">--&gt;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>添加网站已运行时间：</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;!-- 网站运行时间的设置 --&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">&quot;timeDate&quot;</span>&gt;</span>载入天数...<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">&quot;times&quot;</span>&gt;</span>载入时分秒...<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="keyword">var</span> now = <span class="keyword">new</span> <span class="title class_">Date</span>();</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="keyword">function</span> <span class="title function_">createtime</span>(<span class="params"></span>) &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">      <span class="keyword">var</span> grt= <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="string">&quot;01/01/2022 00:00:00&quot;</span>);<span class="comment">//此处修改你的建站时间或者网站上线时间</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">      now.<span class="title function_">setTime</span>(now.<span class="title function_">getTime</span>()+<span class="number">250</span>);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">      days = (now - grt ) / <span class="number">1000</span> / <span class="number">60</span> / <span class="number">60</span> / <span class="number">24</span>; dnum = <span class="title class_">Math</span>.<span class="title function_">floor</span>(days);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">      hours = (now - grt ) / <span class="number">1000</span> / <span class="number">60</span> / <span class="number">60</span> - (<span class="number">24</span> * dnum); hnum = <span class="title class_">Math</span>.<span class="title function_">floor</span>(hours);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">      <span class="keyword">if</span>(<span class="title class_">String</span>(hnum).<span class="property">length</span> ==<span class="number">1</span> )&#123;hnum = <span class="string">&quot;0&quot;</span> + hnum;&#125; minutes = (now - grt ) / <span class="number">1000</span> /<span class="number">60</span> - (<span class="number">24</span> * <span class="number">60</span> * dnum) - (<span class="number">60</span> * hnum);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">      mnum = <span class="title class_">Math</span>.<span class="title function_">floor</span>(minutes); <span class="keyword">if</span>(<span class="title class_">String</span>(mnum).<span class="property">length</span> ==<span class="number">1</span> )&#123;mnum = <span class="string">&quot;0&quot;</span> + mnum;&#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">      seconds = (now - grt ) / <span class="number">1000</span> - (<span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * dnum) - (<span class="number">60</span> * <span class="number">60</span> * hnum) - (<span class="number">60</span> * mnum);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">      snum = <span class="title class_">Math</span>.<span class="title function_">round</span>(seconds); <span class="keyword">if</span>(<span class="title class_">String</span>(snum).<span class="property">length</span> ==<span class="number">1</span> )&#123;snum = <span class="string">&quot;0&quot;</span> + snum;&#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">      <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;timeDate&quot;</span>).<span class="property">innerHTML</span> = <span class="string">&quot;本站已安全运行 &quot;</span>+dnum+<span class="string">&quot; 天 &quot;</span>;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">      <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;times&quot;</span>).<span class="property">innerHTML</span> = hnum + <span class="string">&quot; 小时 &quot;</span> + mnum + <span class="string">&quot; 分 &quot;</span> + snum + <span class="string">&quot; 秒&quot;</span>;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  &#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="built_in">setInterval</span>(<span class="string">&quot;createtime()&quot;</span>,<span class="number">250</span>);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li><p>修改侧边栏和首页文章透明（已放弃）：</p>
+<ol>
+<li><p>第一种方式，直接改。</p>
+</li>
+<li><p>侧边栏透明 1<code>themes\next\source\css\_schemes\Pisces\_layout.styl</code></p>
+</li>
+</ol>
+<pre><code><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.header-inner</span> &#123;</span><br><span class="line">  +++<span class="attribute">opacity</span>: <span class="number">0.8</span>;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">var</span>(--content-bg-color);</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="variable">$border</span>-radius-inner;</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="variable">$box</span>-shadow-inner;</span><br><span class="line">  <span class="attribute">overflow</span>: hidden;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="variable">$sidebar</span>-desktop;</span><br><span class="line"></span><br><span class="line">  +<span class="built_in">desktop-large</span>() &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="variable">$sidebar</span>-desktop;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  +<span class="built_in">tablet-mobile</span>() &#123;</span><br><span class="line">    <span class="attribute">border-radius</span>: initial;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">    <span class="attribute">width</span>: auto;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre>
+<ol start="3">
+<li>侧边栏透 2<code>themes\next\source\css\_schemes\Pisces\_sidebar.styl</code></li>
+</ol>
+<pre><code><figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.sidebar</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">var</span>(--body-bg-color);</span><br><span class="line">  <span class="attribute">box-shadow</span>: none;</span><br><span class="line">  <span class="attribute">margin-top</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">position</span>: static;</span><br><span class="line">  <span class="attribute">width</span>: $sidebar-desktop;</span><br><span class="line">  +++<span class="attribute">opacity</span>: <span class="number">0.8</span>;</span><br><span class="line">  +<span class="selector-tag">tablet-mobile</span>() &#123;</span><br><span class="line">    <span class="attribute">display</span>: none;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre>
+<ol start="4">
+<li>文章透明 <code>themes\next\source\css\_schemes\Gemini\index.styl</code></li>
+</ol>
+<pre><code><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Post blocks.</span></span><br><span class="line"><span class="selector-class">.content-wrap</span> &#123;</span><br><span class="line">  +++ <span class="attribute">opacity</span>: <span class="number">0.8</span>;</span><br><span class="line">  <span class="attribute">background</span>: initial;</span><br><span class="line">  <span class="attribute">box-shadow</span>: initial;</span><br><span class="line">  <span class="attribute">padding</span>: initial;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre>
+<ol start="5">
+<li>第二种方式，在<code>themes\next\source\css\_variables\base.styl</code>添加全局变量。</li>
+</ol>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Colors</span></span><br><span class="line"><span class="comment">// colors for use across theme.</span></span><br><span class="line"><span class="comment">// --------------------------------------------------</span></span><br><span class="line"><span class="variable">$whitesmoke</span>   = <span class="number">#f5f5f5</span>;</span><br><span class="line"><span class="variable">$gainsboro</span>    = <span class="number">#eee</span>;</span><br><span class="line"><span class="variable">$grey</span>-lighter = <span class="number">#ddd</span>;</span><br><span class="line"><span class="variable">$grey</span>-light   = <span class="number">#ccc</span>;</span><br><span class="line"><span class="variable">$grey</span>         = <span class="number">#bbb</span>;</span><br><span class="line"><span class="variable">$grey</span>-dark    = <span class="number">#999</span>;</span><br><span class="line"><span class="variable">$grey</span>-dim     = <span class="number">#666</span>;</span><br><span class="line"><span class="variable">$black</span>-light  = <span class="number">#555</span>;</span><br><span class="line"><span class="variable">$black</span>-dim    = <span class="number">#333</span>;</span><br><span class="line"><span class="variable">$black</span>-deep   = <span class="number">#444</span>;</span><br><span class="line"><span class="variable">$red</span>          = <span class="number">#ff2a2a</span>;</span><br><span class="line"><span class="variable">$blue</span>-bright  = <span class="number">#87daff</span>;</span><br><span class="line"><span class="variable">$blue</span>         = <span class="number">#0684bd</span>;</span><br><span class="line"><span class="variable">$blue</span>-deep    = <span class="number">#262a30</span>;</span><br><span class="line"><span class="variable">$orange</span>       = <span class="number">#fc6423</span>;</span><br><span class="line"><span class="comment">//透明</span></span><br><span class="line">+++<span class="variable">$opacity</span> = <span class="number">0.8</span></span><br></pre></td></tr></table></figure>
+
+<p> <strong>注意：</strong>最后按照第一种的方式在.styl文件里把<code>opacity = 0.8</code>改为<code>$opacity = 0.8</code></p>
+<p>搜索框存在Bug，归档也闪烁的迹象。</p>
+</li>
+<li><h2 id="文章添加来必力评论："><a href="#文章添加来必力评论：" class="headerlink" title="文章添加来必力评论："></a>文章添加来必力评论：</h2><ol>
+<li>前往 <a href="https://livere.com/">来必力</a> 官网注册账号</li>
+<li>并按要求填写信息获取livere_uid即可</li>
+</ol>
+</li>
+<li><h2 id="博客副标题改成今日诗词："><a href="#博客副标题改成今日诗词：" class="headerlink" title="博客副标题改成今日诗词："></a>博客副标题改成今日诗词：</h2><ol>
+<li><p>前往 <a href="https://www.jinrishici.com/">今日诗词</a> 官网获取api</p>
+</li>
+<li><p>将获取到的代码放入到<code>themes\next\layout\_partials\header\brand.swig</code>如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;%- if subtitle %&#125;</span><br><span class="line">      &lt;p +++id=&quot;jinrishici-sentence&quot; class=&quot;site-subtitle&quot; itemprop=&quot;description&quot;&gt;&#123;&#123; subtitle &#125;&#125;&lt;/p&gt;</span><br><span class="line">      &lt;!-- &lt;span id=&quot;jinrishici-sentence&quot;&gt;正在加载今日诗词....&lt;/span&gt; --&gt;</span><br><span class="line">      +++&lt;script src=&quot;https://sdk.jinrishici.com/v2/browser/jinrishici.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &#123;%- endif %&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li></li>
+</ol>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>获取今日诗词</title>
+    <url>/posts/5/%E4%BB%8A%E6%97%A5%E8%AF%97%E8%AF%8D/</url>
+    <content><![CDATA[<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">&quot;jinrishici-sentence&quot;</span>&gt;</span>正在加载今日诗词...<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script type=<span class="string">&quot;text/javascript&quot;</span> src=<span class="string">&quot;https://sdk.jinrishici.com/v2/browser/jinrishici.js&quot;</span> charset=<span class="string">&quot;utf-8&quot;</span>&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>hexo</category>
+        <category>HTML背景特效</category>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>hexo</tag>
+        <tag>HTML背景特效</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>这是我的第一个条博客</title>
+    <url>/posts/5/%E8%BF%99%E6%98%AF%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%9D%A1%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<h2 id="Welcome-to-WeYC’s-Blog"><a href="#Welcome-to-WeYC’s-Blog" class="headerlink" title="Welcome to WeYC’s Blog"></a>Welcome to WeYC’s Blog</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">System.out.println(&quot;Hello World!&quot;)</span><br><span class="line"></span><br><span class="line">Console.WriteLine(&quot;Hello World!&quot;);</span><br><span class="line"></span><br><span class="line">console.log(&quot;Hello World!&quot;)</span><br><span class="line"></span><br><span class="line">print(&quot;Hello World!&quot;)</span><br><span class="line"></span><br><span class="line">echo &quot;Hello World!&quot;</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>particlesJS HTML动态背景特效</title>
+    <url>/posts/5/particlesJS/</url>
+    <content><![CDATA[<p><a href="https://github.com/VincentGarreau/particles.js">particles.js</a> HTML动态背景特效</p>
+<!-- particles.js container -->
+
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;particles-js&quot;</span> <span class="attr">style</span>=<span class="string">&quot;</span></span></span><br><span class="line"><span class="string"><span class="tag">  position: fixed;</span></span></span><br><span class="line"><span class="string"><span class="tag">  top: 0;</span></span></span><br><span class="line"><span class="string"><span class="tag">  left: 0;</span></span></span><br><span class="line"><span class="string"><span class="tag">  width: 100%;</span></span></span><br><span class="line"><span class="string"><span class="tag">  height: 100%;</span></span></span><br><span class="line"><span class="string"><span class="tag">  background-color: #2A2A30;</span></span></span><br><span class="line"><span class="string"><span class="tag">  z-index: -1;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<!-- 动态背景特效 -->
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script src=<span class="string">&quot;./assets/particles/particles.js&quot;</span>&gt;&lt;/script&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;./assets/particles/app.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>hexo</category>
+        <category>HTML背景特效</category>
+        <category>学习</category>
+        <category>HTML</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>HTML</tag>
+        <tag>hexo</tag>
+        <tag>HTML背景特效</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>青龙面板</title>
+    <url>/posts/5/%E9%9D%92%E9%BE%99%E9%9D%A2%E6%9D%BF/</url>
+    <content><![CDATA[<h1 id="搭建青龙面板"><a href="#搭建青龙面板" class="headerlink" title="搭建青龙面板"></a>搭建<a href="https://github.com/whyour/qinglong">青龙面板</a></h1><ol>
+<li><h2 id="安装Docker容器"><a href="#安装Docker容器" class="headerlink" title="安装Docker容器"></a>安装Docker容器</h2></li>
+<li><h2 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker run -dit \</span><br><span class="line">  -v <span class="variable">$PWD</span>/ql:/ql/data \</span><br><span class="line">  -p 5700:5700 \</span><br><span class="line">  --name qinglong \</span><br><span class="line">  --hostname qinglong \</span><br><span class="line">  --restart unless-stopped \</span><br><span class="line">  whyour/qinglong:latest</span><br></pre></td></tr></table></figure></li>
+<li><h2 id="docker-compose-部署"><a href="#docker-compose-部署" class="headerlink" title="docker-compose 部署"></a>docker-compose 部署</h2><ol>
+<li><p>docker-compose 安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`<span class="built_in">uname</span> -s`-`<span class="built_in">uname</span> -m` -o /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure></li>
+<li><p>启动容器</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> qinglong</span><br><span class="line">wget https://raw.githubusercontent.com/whyour/qinglong/master/docker/docker-compose.yml</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动</span></span><br><span class="line">docker-compose up -d</span><br><span class="line"><span class="comment"># 停止</span></span><br><span class="line">docker-compose down</span><br></pre></td></tr></table></figure></li>
+</ol>
+ <span id="more"></span></li>
+<li><h2 id="青龙面板拉取常用脚本-JD签到"><a href="#青龙面板拉取常用脚本-JD签到" class="headerlink" title="青龙面板拉取常用脚本(JD签到)"></a>青龙面板拉取常用脚本(JD签到)</h2><p><a href="https://www.kejiwanjia.com/">转载自科技玩家</a></p>
+<p>如何拉库：</p>
+<p><code>ql repo &lt;repourl&gt; &lt;path&gt; &lt;blacklist&gt; &lt;dependence&gt; &lt;branch&gt;</code></p>
+<p>对应意思 “库地址” “拉哪些” “不拉哪些” “依赖文件” “分支”</p>
+<p>拉取单个脚本：</p>
+<p><code>ql raw &lt;fileurl&gt;</code></p>
+<p>使用方法：</p>
+<p>一、添加库：进入面板-右上角“定时任务”-分别填入相关信息。提供个人设置，给大家参考。其中人物名、任务定时可自定义。<br>二、运行库任务添加脚本：分别点击每个库的运行按钮，稍等一下，让它飞一会儿。然后刷新页面，就能看到库的脚本了。</p>
+<p>拉库出现的问题及解决方案</p>
+<p>1.出现这种错误：</p>
+<p><code>Cannot find module &#39;xxxx&#39;</code></p>
+<p>依赖不完整，解决方法：</p>
+<p><code>docker exec -it qinglong(容器名称) bashcd /ql/scripts/pnpm install &#39;xxxx&#39;npm install &#39;xxxx&#39;</code></p>
+<p>这两个安装命令都可以用.</p>
+<p>2.出现这种错误：</p>
+<p><code>Cannot find module &#39;./xxxx&#39;</code></p>
+<p>那就很有是拉库命令不完整，请检查或复制完整的拉库命令。</p>
+<p>部分需要的依赖：自行安装</p>
+<p><code>&quot;npm install -g npm&quot;&quot;pip3 install requests&quot;&quot;pip3 install pytz&quot;&quot;npm install -g download&quot;&quot;pnpm install jsdom&quot;&quot;apk add --no-cache build-base g++ cairo-dev pango-dev giflib-dev &amp;&amp; cd scripts &amp;&amp; npm install canvas png-js md5 date-fns axios crypto-js tslib ts-md5 @types/node --build-from-source&quot;</code></p>
+<p>截止2021年12月4日目前还在维护的仓库推荐使用下方两个库，一个日常任务一个开卡 。</p>
+<p>拉库命令：</p>
+<p><code>//国内鸡：ql repo https://ghproxy.com/github.com/KingRan/JDJB.git &quot;jd_|jx_|jdCookie&quot; &quot;activity|backUp&quot; &quot;^jd[^_]|USER|utils|function|sendNotify|ql|JDJR&quot;//国外鸡：ql repo https://github.com/KingRan/JDJB.git &quot;jd_|jx_|jdCookie&quot; &quot;activity|backUp&quot; &quot;^jd[^_]|USER|utils|function|sendNotify|ql|JDJR&quot;</code></p>
+<p>smiek2221开卡库：</p>
+<p><code>//国外鸡：ql repo https://github.com/smiek2221/scripts.git &quot;jd_|gua_&quot; &quot;&quot; &quot;ZooFaker_Necklace.js|JDJRValidator_Pure.js|sign_graphics_validate.js&quot;//国内鸡：ql repo https://ghproxy.com/github.com/smiek2221/scripts.git &quot;jd_|gua_&quot; &quot;&quot; &quot;ZooFaker_Necklace.js|JDJRValidator_Pure.js|sign_graphics_validate.js&quot;</code></p>
+<p>ccwav大佬的资产通知增强版和CK检测（推荐使用）</p>
+<p><code>//不包含sendNotify:ql repo https://github.com/ccwav/QLScript2.git &quot;jd_&quot; &quot;sendNotify|NoUsed&quot; &quot;ql&quot;//包含sendNotify:ql repo https://github.com/ccwav/QLScript2.git &quot;jd_&quot; &quot;NoUsed&quot; &quot;ql|sendNotify&quot;</code></p>
+<p>wskey转换来源于Zy143L大佬（不上传，推荐）</p>
+<p><code>//完美网络用户：ql repo https://github.com/Zy143L/wskey.git &quot;wskey&quot;//国内网络用户：ql repo https://ghproxy.com/github.com/Zy143L/wskey.git &quot;wskey</code></p>
+<p>zero205大佬更新拉库命令（更新频繁，内置作者助力）</p>
+<p><code>ql repo https://github.com/zero205/JD_tencent_scf.git &quot;jd_|jx_|getJDCookie&quot; &quot;backUp|icon&quot; &quot;^jd[^_]|USER|sendNotify|sign_graphics_validate|JDJR&quot;&quot;main&quot;</code></p>
+<p>京东保价、汽车兑换等</p>
+<p><code>//国内鸡 ql repo https://ghproxy.com/github.com/KingRan/JD-Scripts.git &quot;jd_|jx_|getJDCookie&quot; &quot;activity|backUp&quot; &quot;^jd[^_]|USER|utils|function&quot; //国外鸡 ql repo https://github.com/KingRan/JD-Scripts.git &quot;jd_|jx_|getJDCookie&quot; &quot;activity|backUp&quot; &quot;^jd[^_</code>]|USER|utils|function” </p>
+<p>yuannian1112拉取仓库命令：</p>
+<p><code>//国内鸡 ql repo https://hub.fastgit.org/yuannian1112/jd_scripts.git &quot;jd_|jx_|getJDCookie&quot; &quot;activity|backUp&quot; &quot;^jd[^_]|USER|utils&quot; //国外鸡 ql repo https://github.com/yuannian1112/jd_scripts.git &quot;jd_|jx_|getJDCookie&quot; &quot;activity|backUp&quot; &quot;^jd[^_]|USER|utils&quot; //v4修改默认库为 https://hub.fastgit.org/yuannian1112/jd_scripts.git //分支修改为main</code></p>
+<p>star261 粉丝互动</p>
+<p><code>ql repo https://github.com/star261/jd.git &quot;scripts|jd&quot; &quot;&quot; &quot;&quot; &quot;main&quot;</code></p>
+<p><code>chinnkarahoi 无维护，原版</code></p>
+<p><code>ql repo https://github.com/chinnkarahoi/jd_scripts.git &quot;jd_|jx_|getJDCookie&quot; &quot;activity|backUp|Coupon&quot; &quot;^jd[^_]|USER&quot;</code></p>
+<p>JDHelloWorld 基本天天有更新,但是采用TS脚本让初学者不友好</p>
+<p><code>ql repo https://github.com/JDHelloWorld/jd_scripts.git &quot;jd_|jx_|getCookie&quot; &quot;activity|backUp|Coupon|enen|update&quot; &quot;^jd[^_]|USER|tools&quot;</code></p>
+<p>柠檬panghu 已经跑路</p>
+<p><code>ql repo https://github.com/panghu999/jd_scripts.git &quot;jd_|jx_|getJDCookie&quot; &quot;activity|backUp|jd_delCoupon|format_&quot; &quot;^jd[^_]|USER&quot;</code></p>
+<p>he1pu 有更新</p>
+<p><code>ql repo https://github.com/he1pu/JDHelp.git &quot;jd_|jx_|getJDCookie&quot; &quot;activity|backUp|jd_delCoupon&quot; &quot;^jd[^_]|USER&quot;</code></p>
+<p>shufflewzc 集合目前能用的脚本有更新</p>
+<p><code>ql repo https://github.com/shufflewzc/faker2.git &quot;jd_|jx_|jddj_|getJDCookie&quot; &quot;activity|backUp&quot; &quot;^jd[^_]|USER|ZooFaker_Necklace|JDJRValidator_Pure|sign_graphics_validate&quot;</code></p>
+<p>Annyoo2021 lxk最终版及搬运整理 集合目前能用的脚本 推荐</p>
+<p><code>ql repo https://github.com/Annyoo2021/scripts.git &quot;jd_|jx_|long_|getJDCookie&quot; &quot;activity|backUp&quot; &quot;^jd[^_]|USER|ZooFaker_Necklace|JDJRValidator_Pure|JDJRValidator&quot; &quot;main</code></p>
+<p>smiek2221仓库<br><a href="https://github.com/smiek2221/scripts">https://github.com/smiek2221/scripts</a></p>
+<p>Tsukasa007仓库<br><a href="https://github.com/Tsukasa007/my_script/tree/master">https://github.com/Tsukasa007/my_script/tree/master</a></p>
+<p>同步上游各个大佬的仓库 相当于合集<br><a href="https://github.com/DovFork">https://github.com/DovFork</a></p>
+<p>更新7.7最新仓库：（仅提供地址，拉取请参照下面）</p>
+<p>树叶shuye72仓库<br><a href="https://github.com/wuzhi04/MyActions">https://github.com/wuzhi04/MyActions</a></p>
+<p>Annyoo2021仓库 基本天天更新，集合了大量可用脚本<br><a href="https://github.com/Annyoo2021/scripts">https://github.com/Annyoo2021/scripts</a></p>
+<p>lukesyy仓库<br><a href="https://github.com/lukesyy/jd_yun">https://github.com/lukesyy/jd_yun</a></p>
+<p>zero205仓库<br><a href="https://github.com/zero205/JD_tencent_scf">https://github.com/zero205/JD_tencent_scf</a></p>
+<p>curtinlv仓库<br>ql repo <a href="https://github.com/curtinlv/JD-Script.git">https://github.com/curtinlv/JD-Script.git</a> </p>
+<p>he1pu互助仓库<br>ql repo <a href="https://github.com/he1pu/JDHelp.git">https://github.com/he1pu/JDHelp.git</a> “jd_|jx_|getJDCookie” “activity|backUp|Coupon” “^jd[^_]|USER” </p>
+<p>柠檬（胖虎）代维护lxk0301仓库 已经跑路<br>ql repo <a href="https://github.com/panghu999/jd_scripts.git">https://github.com/panghu999/jd_scripts.git</a> “jd_|jx_|getJDCookie” “activity|backUp|Coupon|jd_try|format_” “^jd[^_]|USER” </p>
+<p>zcy01仓库<br>ql repo <a href="https://github.com/ZCY01/daily_scripts.git">https://github.com/ZCY01/daily_scripts.git</a> “jd_” _</p>
+<p><em>passerby-b 仓库<br>ql repo <a href="https://github.com/passerby-b/JDDJ.git">https://github.com/passerby-b/JDDJ.git</a> “jddj</em>“ “scf_test_event|jddj_fruit_code.js|jddj_getck.js|jd_|jddj_cookie” _</p>
+<p><em>JDHelloWorld仓库<br>ql repo <a href="https://github.com/JDHelloWorld/jd_scripts.git">https://github.com/JDHelloWorld/jd_scripts.git</a> “jd</em>|jx_|getJDCookie” “activity|backUp|Coupon|enen|update” “^jd[^_]|USER” </p>
+<p>jiulan仓库<br>ql repo <a href="https://github.com/jiulan/platypus.git">https://github.com/jiulan/platypus.git</a> </p>
+<p>Ariszy（Zhiyi-N）仓库<br>ql repo <a href="https://github.com/Ariszy/Private-Script.git">https://github.com/Ariszy/Private-Script.git</a> “JD” </p>
+<p>柠檬（胖虎）仓库<br>ql repo <a href="https://github.com/panghu999/panghu.git">https://github.com/panghu999/panghu.git</a> “jd_” </p>
+<p>混沌仓库<br>ql repo <a href="https://github.com/whyour/hundun.git">https://github.com/whyour/hundun.git</a> “quanx” “tokens|caiyun|didi|donate|fold|Env|.py” </p>
+<p>moposmall仓库<br>ql repo <a href="https://github.com/moposmall/Script.git">https://github.com/moposmall/Script.git</a> “jx_mc|cfd.js” </p>
+<p>龙珠仓库<br>ql repo <a href="https://github.com/longzhuzhu/nianyu.git">https://github.com/longzhuzhu/nianyu.git</a> “qx” “main” </p>
+</li>
+<li><h2 id="目前用的脚本库"><a href="#目前用的脚本库" class="headerlink" title="目前用的脚本库:"></a>目前用的脚本库:</h2><ol>
+<li><a href="https://github.com/shufflewzc/faker3.git">https://github.com/shufflewzc/faker3.git</a></li>
+<li><a href="https://github.com/shufflewzc/faker2.git">https://github.com/shufflewzc/faker2.git</a></li>
+<li><a href="https://github.com/Aaron-lv/sync.git">https://github.com/Aaron-lv/sync.git</a></li>
+<li><a href="https://github.com/6dylan6/jdpro.git">https://github.com/6dylan6/jdpro.git</a></li>
+<li><a href="https://github.com/JDHelloWorld/jd_scripts.git">https://github.com/JDHelloWorld/jd_scripts.git</a></li>
+<li><a href="https://github.com/KingRan/KR.git">https://github.com/KingRan/KR.git</a></li>
+<li><a href="https://github.com/okyyds/yyds.git">https://github.com/okyyds/yyds.git</a></li>
+<li><a href="https://github.com/okyyds/duck.git">https://github.com/okyyds/duck.git</a></li>
+</ol>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>青龙面板</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>折腾</tag>
+        <tag>青龙面板</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>青龙面板搭建JDX短信登</title>
+    <url>/posts/6/%E9%9D%92%E9%BE%99%E9%9D%A2%E6%9D%BF%E6%90%AD%E5%BB%BAJDX%E7%9F%AD%E4%BF%A1%E7%99%BB/</url>
+    <content><![CDATA[ <span id="more"></span>
+
+<p><a href="https://github.com/wangyiidii/jdx">JDX地址</a></p>
+<h2 id="安装说明"><a href="#安装说明" class="headerlink" title="安装说明"></a>安装说明</h2><p>本项目已打包成<code>docker</code>镜像，拉取配置即可使用</p>
+<h3 id="1-🐋拉取并运行docker"><a href="#1-🐋拉取并运行docker" class="headerlink" title="1.🐋拉取并运行docker"></a>1.🐋拉取并运行docker</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">    # 配置文件生成路径</span><br><span class="line">    -v &lt;config dir&gt;:/jdx/config \</span><br><span class="line">    -p &lt;port&gt;:80 \</span><br><span class="line">    --restart=always \</span><br><span class="line">    --name jdx registry.cn-hangzhou.aliyuncs.com/yiidii-hub/jdx:v0.2.1</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这里命令自行替换卷和端口映射</p>
+<p>例如：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">docker run -d \</span></span><br><span class="line"><span class="language-bash"> -v  /data/jdx/config:/jdx/config \</span></span><br><span class="line"><span class="language-bash"> -p 5702:80 \</span></span><br><span class="line"><span class="language-bash"> --restart=always \</span></span><br><span class="line"><span class="language-bash"> --name jdx registry.cn-hangzhou.aliyuncs.com/yiidii-hub/jdx:v0.2.1</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>注意：</p>
+<ul>
+<li><p>记得放行端口</p>
+</li>
+<li><ol start="2">
+<li>访问</li>
+</ol>
+<p>这时候访问 <code>http://ip:port/</code> 就能访问了</p>
+<h3 id="3-后台登录"><a href="#3-后台登录" class="headerlink" title="3. 后台登录"></a>3. 后台登录</h3><p>访问 <code>http://ip:port/admin</code> 首次登录用户名：<code>admin</code>, 密码：<code>123465</code>, <strong>千万记得修改密码！！！！！</strong></p>
+<h2 id="📃-使用说明"><a href="#📃-使用说明" class="headerlink" title="📃 使用说明"></a>📃 使用说明</h2><ol>
+<li>QL配置只能删除和新增，不能编辑操作</li>
+<li>所有涉及编辑和删除的操作，左滑即可（就像微信删除最近联系人一样…）</li>
+</ol>
+<h2 id="📌-一对一推送"><a href="#📌-一对一推送" class="headerlink" title="📌 一对一推送"></a>📌 一对一推送</h2><p>脚本参考<a href="https://github.com/ccwav/QLScript2">ccwav/QLScript2</a> 即可</p>
+<p><strong>用户的uid扫码即可自动填充到备注上，需要在wPusher配置（wxPusher后台 -&gt; 应用管理 -&gt; 应用信息 -&gt; 事件回调地址）如下：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">http://ip:port/api/third/wxPusher/follow/callback</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <categories>
+        <category>青龙面板</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>折腾</tag>
+        <tag>青龙面板</tag>
+      </tags>
+  </entry>
+</search>
